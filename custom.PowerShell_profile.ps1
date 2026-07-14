@@ -1,3 +1,5 @@
+$show_interactive_shell_message_Override = $true
+
 $scripts = @()
 
 foreach ($script in $scripts) {

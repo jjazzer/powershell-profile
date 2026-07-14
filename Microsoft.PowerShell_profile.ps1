@@ -69,6 +69,7 @@ function Get-UriContent {
 }
 
 $isInteractiveShell = Test-InteractiveShell
+$showInteractiveShellMessage = if ($null -ne $show_interactive_shell_message_Override) { [bool]$show_interactive_shell_message_Override } else { $false }
 $debug = if ($null -ne $debug_Override) { [bool]$debug_Override } else { $false }
 $repo_root = if ($repo_root_Override) { $repo_root_Override } else { 'https://raw.githubusercontent.com/jjazzer' }
 $profileDir = Get-ProfileDir
@@ -757,7 +758,6 @@ Invoke-ScheduledProfileUpdate
 
 if ($showHelpOnLaunch) {
     Show-Help
+} elseif ($isInteractiveShell -and $showInteractiveShellMessage) {
+    Write-Host "Use 'Show-Help' to display help" -ForegroundColor Yellow
 }
-# elseif ($isInteractiveShell) {
-#     Write-Host "Use 'Show-Help' to display help" -ForegroundColor Yellow
-# }

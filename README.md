@@ -65,6 +65,7 @@ $EDITOR_Override
 $debug_Override
 $repo_root_Override
 $show_help_Override
+$show_interactive_shell_message_Override
 $timeFilePath_Override
 $updateInterval_Override
 ```
