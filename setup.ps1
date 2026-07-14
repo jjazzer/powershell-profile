@@ -1,4 +1,4 @@
-$profileSourceUri = 'https://github.com/ChrisTitusTech/powershell-profile/raw/main/Microsoft.PowerShell_profile.ps1'
+$profileSourceUri = 'https://github.com/jjazzer/powershell-profile/raw/main/Microsoft.PowerShell_profile.ps1'
 $themeSourceUri = 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/cobalt2.omp.json'
 
 function Enable-Tls12 {
@@ -70,7 +70,7 @@ function Save-ProfileBackup {
     }
 
     $timestamp = Get-Date -Format 'yyyyMMdd-HHmmss'
-    $backupPath = Join-Path (Split-Path -Path $ProfilePath -Parent) "oldprofile-$timestamp.ps1"
+    $backupPath = Join-Path (Split-Path -Path $ProfilePath -Parent) "Microsoft.PowerShell_profile.ps1.bak-$timestamp"
     Copy-Item -Path $ProfilePath -Destination $backupPath -Force
     return $backupPath
 }
@@ -159,9 +159,9 @@ function Get-InstalledFontName {
 
 function Install-NerdFont {
     param(
-        [string]$FontName = 'CascadiaCode',
-        [string]$FontDisplayName = 'CaskaydiaCove NF',
-        [string]$Version = '3.2.1'
+        [string]$FontName = 'JetBrainsMono',
+        [string]$FontDisplayName = 'JetBrainsMono Nerd Font',
+        [string]$Version = '3.4.0'
     )
 
     if ((Get-InstalledFontName) -contains $FontDisplayName) {
@@ -227,7 +227,8 @@ Install-Profile -SourceUri $profileSourceUri -ProfilePath $profilePath
 Install-WinGetPackage -Id 'JanDeDobbeleer.OhMyPosh' -Name 'Oh My Posh' | Out-Null
 Install-WinGetPackage -Id 'ajeetdsouza.zoxide' -Name 'zoxide' | Out-Null
 Install-OhMyPoshTheme | Out-Null
-Install-NerdFont | Out-Null
+Install-WinGetPackage -Id 'DEVCOM.JetBrainsMonoNerdFont' -Name 'JetBrainsMono Nerd Font' | Out-Null
+# Install-NerdFont | Out-Null
 Install-TerminalIconsModule | Out-Null
 
 Write-Host 'Setup completed. Restart PowerShell to load the profile.'

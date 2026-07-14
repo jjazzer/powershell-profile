@@ -1,4 +1,5 @@
 ### Chris Titus Tech's PowerShell profile
+### Forked by JJazzer
 
 function Enable-Tls12 {
     try {
@@ -11,7 +12,7 @@ function Enable-Tls12 {
 Enable-Tls12
 
 $script:ProfileRoot = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Path $PROFILE.CurrentUserCurrentHost -Parent }
-$script:CustomProfile = Join-Path -Path $script:ProfileRoot -ChildPath 'CTTcustom.ps1'
+$script:CustomProfile = Join-Path -Path $script:ProfileRoot -ChildPath 'custom.PowerShell_profile.ps1'
 
 if (Test-Path -Path $script:CustomProfile -PathType Leaf) {
     . $script:CustomProfile
@@ -69,7 +70,7 @@ function Get-UriContent {
 
 $isInteractiveShell = Test-InteractiveShell
 $debug = if ($null -ne $debug_Override) { [bool]$debug_Override } else { $false }
-$repo_root = if ($repo_root_Override) { $repo_root_Override } else { 'https://raw.githubusercontent.com/ChrisTitusTech' }
+$repo_root = if ($repo_root_Override) { $repo_root_Override } else { 'https://raw.githubusercontent.com/jjazzer' }
 $profileDir = Get-ProfileDir
 $timeFilePath = if ($timeFilePath_Override) { $timeFilePath_Override } else { Join-Path $profileDir 'LastExecutionTime.txt' }
 $updateInterval = if ($null -ne $updateInterval_Override) { [int]$updateInterval_Override } else { 7 }
@@ -510,6 +511,7 @@ function dtop {
 function k9 { param([Parameter(Mandatory)][string]$Name) pkill $Name }
 function la { Get-ChildItem | Format-Table -AutoSize }
 function ll { Get-ChildItem -Force | Format-Table -AutoSize }
+function g { git @args }
 function gs { git status }
 function ga { git add . }
 function gc { git commit -m ($args -join ' ') }
@@ -517,13 +519,13 @@ function gpush { git push @args }
 function gpull { git pull @args }
 function gcl { git clone @args }
 
-function g {
-    if (Get-Command __zoxide_z -ErrorAction SilentlyContinue) {
-        __zoxide_z github
-    } elseif (Test-Path -Path "$HOME\github") {
-        Set-Location "$HOME\github"
-    }
-}
+# function g {
+#     if (Get-Command __zoxide_z -ErrorAction SilentlyContinue) {
+#         __zoxide_z github
+#     } elseif (Test-Path -Path "$HOME\github") {
+#         Set-Location "$HOME\github"
+#     }
+# }
 
 function gcom {
     git add .
@@ -755,6 +757,7 @@ Invoke-ScheduledProfileUpdate
 
 if ($showHelpOnLaunch) {
     Show-Help
-} elseif ($isInteractiveShell) {
-    Write-Host "Use 'Show-Help' to display help" -ForegroundColor Yellow
 }
+# elseif ($isInteractiveShell) {
+#     Write-Host "Use 'Show-Help' to display help" -ForegroundColor Yellow
+# }
