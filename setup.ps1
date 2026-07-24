@@ -1,5 +1,4 @@
 $profileSourceUri = 'https://github.com/jjazzer/powershell-profile/raw/main/Microsoft.PowerShell_profile.ps1'
-$themeSourceUri = 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/cobalt2.omp.json'
 
 function Enable-Tls12 {
     try {
@@ -125,28 +124,6 @@ function Install-WinGetPackage {
     }
 }
 
-function Install-OhMyPoshTheme {
-    param(
-        [string]$ThemeName = 'cobalt2',
-        [string]$ThemeUri = $themeSourceUri
-    )
-
-    $profileDir = Get-ProfileDir
-    if (-not (Test-Path -Path $profileDir)) {
-        New-Item -Path $profileDir -ItemType Directory -Force | Out-Null
-    }
-
-    $themePath = Join-Path $profileDir "$ThemeName.omp.json"
-    try {
-        Save-UriToFile -Uri $ThemeUri -OutFile $themePath
-        Write-Host "Oh My Posh theme installed to [$themePath]."
-        return $themePath
-    } catch {
-        Write-Warning "Failed to download Oh My Posh theme. Error: $_"
-        return $null
-    }
-}
-
 function Get-InstalledFontName {
     try {
         Add-Type -AssemblyName System.Drawing -ErrorAction Stop
@@ -154,45 +131,6 @@ function Get-InstalledFontName {
     } catch {
         Write-Warning "Unable to inspect installed fonts. Error: $_"
         return @()
-    }
-}
-
-function Install-NerdFont {
-    param(
-        [string]$FontName = 'JetBrainsMono',
-        [string]$FontDisplayName = 'JetBrainsMono Nerd Font',
-        [string]$Version = '3.4.0'
-    )
-
-    if ((Get-InstalledFontName) -contains $FontDisplayName) {
-        Write-Host "Font [$FontDisplayName] is already installed."
-        return $true
-    }
-
-    $fontZipUrl = "https://github.com/ryanoasis/nerd-fonts/releases/download/v$Version/$FontName.zip"
-    $zipFilePath = Join-Path $env:TEMP "$FontName.zip"
-    $extractPath = Join-Path $env:TEMP $FontName
-
-    try {
-        Remove-Item -Path $extractPath -Recurse -Force -ErrorAction SilentlyContinue
-        Save-UriToFile -Uri $fontZipUrl -OutFile $zipFilePath
-        Expand-Archive -Path $zipFilePath -DestinationPath $extractPath -Force
-
-        $fontShellFolder = (New-Object -ComObject Shell.Application).Namespace(0x14)
-        Get-ChildItem -Path $extractPath -Recurse -Filter '*.ttf' | ForEach-Object {
-            if (-not (Test-Path "C:\Windows\Fonts\$($_.Name)")) {
-                $fontShellFolder.CopyHere($_.FullName, 0x10)
-            }
-        }
-
-        Write-Host "Font [$FontDisplayName] installed."
-        return $true
-    } catch {
-        Write-Warning "Failed to install $FontDisplayName. Error: $_"
-        return $false
-    } finally {
-        Remove-Item -Path $extractPath -Recurse -Force -ErrorAction SilentlyContinue
-        Remove-Item -Path $zipFilePath -Force -ErrorAction SilentlyContinue
     }
 }
 
@@ -224,11 +162,9 @@ try {
 
 $profilePath = $PROFILE.CurrentUserCurrentHost
 Install-Profile -SourceUri $profileSourceUri -ProfilePath $profilePath
-Install-WinGetPackage -Id 'JanDeDobbeleer.OhMyPosh' -Name 'Oh My Posh' | Out-Null
+Install-WinGetPackage -Id 'Starship.Starship' -Name 'Starship' | Out-Null
 Install-WinGetPackage -Id 'ajeetdsouza.zoxide' -Name 'zoxide' | Out-Null
-Install-OhMyPoshTheme | Out-Null
 Install-WinGetPackage -Id 'DEVCOM.JetBrainsMonoNerdFont' -Name 'JetBrainsMono Nerd Font' | Out-Null
-# Install-NerdFont | Out-Null
 Install-TerminalIconsModule | Out-Null
 
 Write-Host 'Setup completed. Restart PowerShell to load the profile.'

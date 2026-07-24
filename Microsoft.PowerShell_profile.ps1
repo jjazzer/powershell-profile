@@ -520,14 +520,6 @@ function gpush { git push @args }
 function gpull { git pull @args }
 function gcl { git clone @args }
 
-# function g {
-#     if (Get-Command __zoxide_z -ErrorAction SilentlyContinue) {
-#         __zoxide_z github
-#     } elseif (Test-Path -Path "$HOME\github") {
-#         Set-Location "$HOME\github"
-#     }
-# }
-
 function gcom {
     git add .
     git commit -m ($args -join ' ')
@@ -685,15 +677,16 @@ function Initialize-PromptTool {
 
     if (Get-Command -Name 'Get-Theme_Override' -ErrorAction SilentlyContinue) {
         Get-Theme_Override
-    } elseif (Test-Command oh-my-posh) {
-        $theme = Resolve-OhMyPoshTheme
-        if ($theme) {
-            oh-my-posh init pwsh --config $theme | Invoke-Expression
-        } elseif ($isInteractiveShell) {
-            Write-Warning 'Oh My Posh theme not found. Run setup.ps1 to install cobalt2.omp.json.'
-        }
+    } elseif (Test-Command starship) {
+        #$theme = Resolve-OhMyPoshTheme
+        #if ($theme) {
+            #oh-my-posh init pwsh --config $theme | Invoke-Expression
+            starship init powershell | Invoke-Expression
+        #} elseif ($isInteractiveShell) {
+        #    Write-Warning 'Oh My Posh theme not found. Run setup.ps1 to install cobalt2.omp.json.'
+        #}
     } elseif ($isInteractiveShell) {
-        Write-Warning 'oh-my-posh is not installed. Run setup.ps1 to install dependencies.'
+        Write-Warning 'starship is not installed. Run setup.ps1 to install dependencies.'
     }
 
     if (Test-Command zoxide) {
@@ -715,7 +708,7 @@ Profile:
   Update-PowerShell Check for the latest PowerShell release and update with winget.
 
 Git:
-  g                 Go to the GitHub directory with zoxide fallback.
+  g                 git
   ga                git add .
   gc <message>      git commit -m <message>
   gcl <repo>        git clone <repo>
