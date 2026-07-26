@@ -580,7 +580,8 @@ function Initialize-PSReadLine {
     }
 
     $options = @{
-        EditMode                    = 'Windows'
+        EditMode                   = 'Vi'
+        ViModeIndicator            = 'Cursor'
         HistoryNoDuplicates        = $true
         HistorySearchCursorMovesToEnd = $true
         PredictionSource           = 'History'
