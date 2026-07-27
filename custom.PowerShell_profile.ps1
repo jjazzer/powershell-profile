@@ -31,3 +31,7 @@ function Make-HardLink ($target, $link) {
 function Make-Junction ($target, $link) {
     New-Item -Path $link -ItemType Junction -Value $target
 }
+
+function locip ([String]$addressFamily = 'IPv4') {
+  Get-NetIPAddress -AddressFamily $addressFamily | Select-Object 'InterfaceAlias', 'IPAddress'
+}
