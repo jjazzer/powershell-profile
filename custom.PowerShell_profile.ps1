@@ -19,7 +19,7 @@ function Get-RemovableDrive {
   Write-Output $listDrives
 }
 
-function Eject-RemovableDrive([String] $driveLetter) {
+function Eject-RemovableDrive ([String] $driveLetter) {
   $drive = New-Object -ComObject Shell.Application
   $drive.Namespace(17).ParseName($driveLetter).InvokeVerb('Eject')
 }
@@ -38,4 +38,12 @@ function Make-Junction ($target, $link) {
 
 function locip ([String]$addressFamily = 'IPv4') {
   Get-NetIPAddress -AddressFamily $addressFamily | Select-Object 'InterfaceAlias', 'IPAddress'
+}
+
+function Set-Brightness ($percent) {
+  $cim = Get-CimInstance -Namespace root/wmi -ClassName WmiMonitorBrightnessMethods
+  Invoke-CimMethod `
+    -InputObject $cim `
+    -MethodName WmiSetBrightness `
+    -Arguments @{Brightness = $percent; Timeout = 1} | Out-Null
 }
