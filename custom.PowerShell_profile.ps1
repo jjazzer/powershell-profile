@@ -1,12 +1,16 @@
-$show_interactive_shell_message_Override = $true
+$show_interactive_shell_message_Override = $false
 
-$scripts = @()
+$scripts = @(
+  "$PROFILE\..\audio.ps1"
+)
 
 foreach ($script in $scripts) {
   if (Get-Item $script -ErrorAction SilentlyContinue) {
     . $script
   }
 }
+
+Set-Alias -Name wg -Value winget.exe -Force
 
 function Get-RemovableDrive {
   $listDrives = Get-Volume |
