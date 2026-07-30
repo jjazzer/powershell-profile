@@ -1,6 +1,9 @@
 ### Chris Titus Tech's PowerShell profile
 ### Forked by JJazzer
 
+# Set environment variables
+$ErrorView = 'ConciseView'
+
 function Enable-Tls12 {
     try {
         [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
