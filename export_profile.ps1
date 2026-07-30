@@ -1,3 +1,8 @@
 $profileDir = $PROFILE.CurrentUserCurrentHost | Split-Path
+$scriptPaths = @(
+	"$PSScriptRoot\Microsoft.PowerShell_profile.ps1"
+	"$PSScriptRoot\custom.PowerShell_profile.ps1"
+	"$PSScriptRoot\Scripts\"
+)
 
-Copy-Item -Path $PSScriptRoot\*.ps1 -Destination $profileDir -Force
+Copy-Item -Path $scriptPaths -Destination $profileDir -Force -Recurse

@@ -1,13 +1,7 @@
 $show_interactive_shell_message_Override = $false
 
-$scripts = @(
-  "$PROFILE\..\audio.ps1"
-)
-
-foreach ($script in $scripts) {
-  if (Get-Item $script -ErrorAction SilentlyContinue) {
-    . $script
-  }
+foreach ($script in (Get-Item $script:ProfileRoot\Scripts\*.ps1)) {
+  . $script
 }
 
 Set-Alias -Name wg -Value winget.exe -Force

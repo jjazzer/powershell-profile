@@ -2,7 +2,7 @@
 ### Forked by JJazzer
 
 # Set environment variables
-$ErrorView = 'ConciseView'
+$ErrorView = 'CategoryView'
 
 function Enable-Tls12 {
     try {

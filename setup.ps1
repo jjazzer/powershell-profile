@@ -84,6 +84,9 @@ function Install-Profile {
     if (-not (Test-Path -Path $profileDir)) {
         New-Item -Path $profileDir -ItemType Directory -Force | Out-Null
     }
+    if (-not (Test-Path -Path $profileDir\Scripts)) {
+        New-Item -Path $profileDir\Scripts -ItemType Directory -Force | Out-Null
+    }
 
     $tempProfile = Join-Path $env:TEMP 'Microsoft.PowerShell_profile.ps1'
     try {
