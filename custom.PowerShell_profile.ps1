@@ -43,3 +43,12 @@ function Set-Brightness ($percent) {
     -MethodName WmiSetBrightness `
     -Arguments @{Brightness = $percent; Timeout = 1} | Out-Null
 }
+
+function Set-Volume {
+  param (
+    [Int]$percent = [Audio]::Volume * 100,
+    [Switch]$mute
+  )
+  [Audio]::Volume = [Math]::Clamp($percent, 0, 100) / 100
+  [Audio]::Mute = $mute
+}
