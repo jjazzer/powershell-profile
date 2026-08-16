@@ -1,5 +1,7 @@
 $show_interactive_shell_message_Override = $false
 
+Add-Type -Path "$script:ProfileRoot\PowerShellAudio.cs"
+
 foreach ($script in (Get-Item $script:ProfileRoot\Scripts\*.ps1)) {
   . $script
 }
